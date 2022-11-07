@@ -18,23 +18,24 @@ jobs:
 
       - name: Post PR template as a comment
         uses: actions/github-script@v6
-        script: |
-          const fs = require('fs')
+        with:
+          script: |
+            const fs = require('fs')
 
-          const body = [
-            "pull_request_template.md",
-            ".github/pull_request_template.md",
-            "docs/pull_request_template.md",
-          ].
-            filter(path => fs.existsSync(path)).
-            map(path => fs.readFileSync(path)).
-            join("\n")
+            const body = [
+              "pull_request_template.md",
+              ".github/pull_request_template.md",
+              "docs/pull_request_template.md",
+            ].
+              filter(path => fs.existsSync(path)).
+              map(path => fs.readFileSync(path)).
+              join("\n")
 
-          if (body !== "") {
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body
-            })
-          }
+            if (body !== "") {
+              github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body
+              })
+            }
